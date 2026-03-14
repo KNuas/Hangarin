@@ -1,0 +1,182 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<h1 class="page-title">Tasks</h1>
+<p class="page-subtitle">Manage all your tasks in one place.</p>
+
+<div class="card">
+
+<div class="task-header">
+<h2>Task Records</h2>
+
+<a class="btn" href="{% url 'task_create' %}">
++ Add Task
+</a>
+</div>
+
+
+<form method="GET" class="sort-box">
+<label>Sort by</label>
+
+<select name="sort" onchange="this.form.submit()">
+<option value="">Default</option>
+<option value="date">Date Added</option>
+<option value="priority">Priority</option>
+<option value="status">Status</option>
+<option value="title">Title</option>
+</select>
+</form>
+
+
+<div class="table-wrap">
+
+<table class="task-table">
+
+<thead>
+<tr>
+<th>Title</th>
+<th>Status</th>
+<th>Priority</th>
+<th>Category</th>
+<th>Deadline</th>
+<th class="actions-col">Actions</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for task in tasks %}
+
+<tr>
+
+<td>{{ task.title }}</td>
+
+<td>
+{% if task.status == "Pending" %}
+<span class="badge badge-pending">{{ task.status }}</span>
+
+{% elif task.status == "In Progress" %}
+<span class="badge badge-progress">{{ task.status }}</span>
+
+{% elif task.status == "Completed" %}
+<span class="badge badge-completed">{{ task.status }}</span>
+
+{% else %}
+{{ task.status }}
+{% endif %}
+</td>
+
+<td>{{ task.priority }}</td>
+
+<td>{{ task.category }}</td>
+
+<td>{{ task.deadline }}</td>
+
+<td>
+
+<div class="actions-row">
+
+<a class="btn btn-xs" href="{% url 'task_detail' task.pk %}">
+View
+</a>
+
+<a class="btn btn-secondary btn-xs" href="{% url 'task_update' task.pk %}">
+Edit
+</a>
+
+{% if task.status != "Completed" %}
+<a class="btn btn-success btn-xs" href="{% url 'mark_task_completed' task.pk %}">
+Complete
+</a>
+{% endif %}
+
+<a class="btn btn-danger btn-xs" href="{% url 'task_delete' task.pk %}">
+Delete
+</a>
+
+</div>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6" class="empty-text">No tasks available.</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+
+<style>
+
+/* HEADER */
+
+.task-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+/* SORT */
+
+.sort-box{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:20px;
+}
+
+/* TABLE */
+
+.task-table{
+width:100%;
+border-collapse:collapse;
+}
+
+.task-table th{
+background:#eef2ff;
+padding:12px;
+text-align:left;
+}
+
+.task-table td{
+padding:14px;
+border-bottom:1px solid #e5e7eb;
+}
+
+/* ACTION COLUMN */
+
+.actions-col{
+width:360px;
+}
+
+/* ACTION BUTTON ROW */
+
+.actions-row{
+display:flex;
+gap:8px;
+flex-wrap:nowrap;
+}
+
+/* SMALL BUTTON */
+
+.btn-xs{
+padding:7px 14px;
+font-size:13px;
+white-space:nowrap;
+}
+
+</style>
+
+{% endblock %}

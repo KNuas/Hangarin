@@ -1,0 +1,88 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<h1 class="page-title">Task Details</h1>
+<p class="page-subtitle">View task information, subtasks, and notes.</p>
+
+<div class="card">
+    <div class="section-title">
+        <h2>{{ task.title }}</h2>
+        <div>
+            <a class="btn btn-secondary" href="{% url 'task_list' %}">Back</a>
+            <a class="btn" href="{% url 'task_update' task.pk %}">Edit</a>
+            <a class="btn btn-danger" href="{% url 'task_delete' task.pk %}">Delete</a>
+        </div>
+    </div>
+
+    <p><strong>Description:</strong> {{ task.description }}</p>
+
+    <div class="task-meta">
+        <div class="meta-box">
+            <div class="meta-label">Status</div>
+            <div class="meta-value">
+                {% if task.status == "Pending" %}
+                    <span class="badge badge-pending">{{ task.status }}</span>
+                {% elif task.status == "In Progress" %}
+                    <span class="badge badge-progress">{{ task.status }}</span>
+                {% elif task.status == "Completed" %}
+                    <span class="badge badge-completed">{{ task.status }}</span>
+                {% else %}
+                    {{ task.status }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="meta-box">
+            <div class="meta-label">Priority</div>
+            <div class="meta-value">
+                <span class="badge badge-priority-{{ task.priority.name|lower }}">
+                    {{ task.priority }}
+                </span>
+            </div>
+        </div>
+
+        <div class="meta-box">
+            <div class="meta-label">Category</div>
+            <div class="meta-value">{{ task.category }}</div>
+        </div>
+
+        <div class="meta-box">
+            <div class="meta-label">Deadline</div>
+            <div class="meta-value">{{ task.deadline }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Subtasks</h3>
+    <ul>
+        {% for subtask in subtasks %}
+            <li>
+                <strong>{{ subtask.title }}</strong> -
+                {% if subtask.status == "Pending" %}
+                    <span class="badge badge-pending">{{ subtask.status }}</span>
+                {% elif subtask.status == "In Progress" %}
+                    <span class="badge badge-progress">{{ subtask.status }}</span>
+                {% elif subtask.status == "Completed" %}
+                    <span class="badge badge-completed">{{ subtask.status }}</span>
+                {% else %}
+                    {{ subtask.status }}
+                {% endif %}
+            </li>
+        {% empty %}
+            <li class="empty-text">No subtasks available.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="card">
+    <h3>Notes</h3>
+    <ul>
+        {% for note in notes %}
+            <li>{{ note.content }}</li>
+        {% empty %}
+            <li class="empty-text">No notes available.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

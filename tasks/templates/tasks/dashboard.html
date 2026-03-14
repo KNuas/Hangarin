@@ -1,0 +1,110 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<h1 class="page-title">Hangarin Dashboard</h1>
+<p class="page-subtitle">Track goals, manage tasks, and stay productive every day.</p>
+
+<div class="stats">
+    <div class="stat-box stat-total">
+        <h2>{{ total_tasks }}</h2>
+        <p>Total Tasks</p>
+    </div>
+
+    <div class="stat-box stat-pending">
+        <h2>{{ pending_tasks }}</h2>
+        <p>Pending</p>
+    </div>
+
+    <div class="stat-box stat-progress">
+        <h2>{{ in_progress_tasks }}</h2>
+        <p>In Progress</p>
+    </div>
+
+    <div class="stat-box stat-completed">
+        <h2>{{ completed_tasks }}</h2>
+        <p>Completed</p>
+    </div>
+</div>
+
+<div class="card">
+
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:15px;">
+
+        <h2 style="margin:0;">Recent Tasks</h2>
+
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+
+            <a class="btn" href="{% url 'task_list' %}">
+                View All Tasks
+            </a>
+
+            <form method="GET" style="margin:0;">
+                <select name="sort" onchange="this.form.submit()">
+                    <option value="">Sort</option>
+                    <option value="date">Newest</option>
+                    <option value="deadline">Deadline</option>
+                    <option value="priority">Priority</option>
+                    <option value="status">Status</option>
+                </select>
+            </form>
+
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+
+            <td>
+                {% if task.status == "Pending" %}
+                    <span class="badge badge-pending">{{ task.status }}</span>
+                {% elif task.status == "In Progress" %}
+                    <span class="badge badge-progress">{{ task.status }}</span>
+                {% elif task.status == "Completed" %}
+                    <span class="badge badge-completed">{{ task.status }}</span>
+                {% else %}
+                    {{ task.status }}
+                {% endif %}
+            </td>
+
+            <td>{{ task.deadline }}</td>
+
+            <td>
+                <div class="actions">
+                    <a class="btn" href="{% url 'task_detail' task.pk %}">View</a>
+                    <a class="btn btn-secondary" href="{% url 'task_update' task.pk %}">Edit</a>
+                    <a class="btn btn-danger" href="{% url 'task_delete' task.pk %}">Delete</a>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="empty-text">No tasks found.</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+<style>
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.actions .btn{
+    margin:0;
+}
+</style>
+
+{% endblock %}
