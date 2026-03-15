@@ -1,0 +1,117 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<h1 class="page-title">Sub Tasks</h1>
+<p class="page-subtitle">Manage and monitor subtasks.</p>
+
+<div class="card">
+
+<div class="filter-bar">
+
+<form method="GET" class="filter-form">
+
+<input 
+type="text"
+name="search"
+placeholder="Search subtask title..."
+value="{{ request.GET.search }}"
+class="search-box"
+>
+
+<select name="status" onchange="this.form.submit()">
+
+<option value="">All Status</option>
+
+<option value="Pending">Pending</option>
+
+<option value="In Progress">In Progress</option>
+
+<option value="Completed">Completed</option>
+
+</select>
+
+<button type="submit" class="btn">Search</button>
+
+</form>
+
+</div>
+
+
+<table class="task-table">
+
+<thead>
+<tr>
+<th>Title</th>
+<th>Status</th>
+<th>Parent Task</th>
+<th>Created</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for subtask in subtasks %}
+
+<tr>
+
+<td>{{ subtask.title }}</td>
+
+<td>
+
+{% if subtask.status == "Pending" %}
+<span class="badge badge-pending">Pending</span>
+
+{% elif subtask.status == "In Progress" %}
+<span class="badge badge-progress">In Progress</span>
+
+{% elif subtask.status == "Completed" %}
+<span class="badge badge-completed">Completed</span>
+
+{% endif %}
+
+</td>
+
+<td>{{ subtask.parent_task.title }}</td>
+
+<td>{{ subtask.created_at|date:"M d, Y" }}</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4">No subtasks found.</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<style>
+
+.filter-bar{
+margin-bottom:20px;
+}
+
+.filter-form{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.search-box{
+padding:8px 12px;
+border-radius:6px;
+border:1px solid #ccc;
+width:250px;
+}
+
+</style>
+
+{% endblock %}

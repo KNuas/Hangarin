@@ -1,0 +1,63 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<h1 class="page-title">Categories</h1>
+<p class="page-subtitle">View all categories used for organizing tasks.</p>
+
+<div class="card">
+
+<div class="filter-bar">
+<form method="GET" class="filter-form">
+<input
+type="text"
+name="search"
+placeholder="Search category name..."
+value="{{ request.GET.search }}"
+class="search-box"
+>
+
+<button type="submit" class="btn">Search</button>
+</form>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Category Name</th>
+</tr>
+</thead>
+
+<tbody>
+{% for category in categories %}
+<tr>
+<td>{{ category.name }}</td>
+</tr>
+{% empty %}
+<tr>
+<td class="empty-text">No categories found.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+
+<style>
+.filter-bar{
+margin-bottom:20px;
+}
+
+.filter-form{
+display:flex;
+gap:10px;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.search-box{
+max-width:300px;
+}
+</style>
+
+{% endblock %}

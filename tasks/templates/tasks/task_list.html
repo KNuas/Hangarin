@@ -67,7 +67,28 @@
 {% endif %}
 </td>
 
-<td>{{ task.priority }}</td>
+<td>
+
+{% if task.priority.name == "Low" %}
+<span class="priority priority-low">Low</span>
+
+{% elif task.priority.name == "Medium" %}
+<span class="priority priority-medium">Medium</span>
+
+{% elif task.priority.name == "High" %}
+<span class="priority priority-high">High</span>
+
+{% elif task.priority.name == "Critical" %}
+<span class="priority priority-critical">Critical</span>
+
+{% elif task.priority.name == "Optional" %}
+<span class="priority priority-optional">Optional</span>
+
+{% else %}
+{{ task.priority }}
+{% endif %}
+
+</td>
 
 <td>{{ task.category }}</td>
 

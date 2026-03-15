@@ -1,0 +1,75 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+
+<h1 class="page-title">Notes</h1>
+<p class="page-subtitle">Search notes and filter them by date created.</p>
+
+<div class="card">
+
+<div class="filter-bar">
+<form method="GET" class="filter-form">
+
+<input
+type="text"
+name="search"
+placeholder="Search note content..."
+value="{{ request.GET.search }}"
+class="search-box"
+>
+
+<input
+type="date"
+name="created_at"
+value="{{ request.GET.created_at }}"
+>
+
+<button type="submit" class="btn">Apply</button>
+
+</form>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Content</th>
+<th>Created At</th>
+</tr>
+</thead>
+
+<tbody>
+{% for note in notes %}
+<tr>
+<td>{{ note.task.title }}</td>
+<td>{{ note.content }}</td>
+<td>{{ note.created_at|date:"M d, Y h:i A" }}</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="3" class="empty-text">No notes found.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+</div>
+
+<style>
+.filter-bar{
+margin-bottom:20px;
+}
+
+.filter-form{
+display:flex;
+gap:10px;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.search-box{
+max-width:320px;
+}
+</style>
+
+{% endblock %}

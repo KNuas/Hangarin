@@ -85,6 +85,48 @@ max-width:1800px;
 margin:auto;
 }
 
+.priority{
+display:inline-block;
+padding:6px 14px;
+border-radius:999px;
+font-size:13px;
+font-weight:700;
+}
+
+/* LOW */
+
+.priority-low{
+background:#dbeafe;
+color:#1e40af;
+}
+
+/* MEDIUM */
+
+.priority-medium{
+background:#fef3c7;
+color:#92400e;
+}
+
+/* HIGH */
+
+.priority-high{
+background:#fed7aa;
+color:#c2410c;
+}
+
+/* CRITICAL */
+
+.priority-critical{
+background:#fecaca;
+color:#b91c1c;
+}
+
+/* OPTIONAL */
+
+.priority-optional{
+background:#e5e7eb;
+color:#374151;
+}
 /* TITLES */
 
 .page-title{
@@ -350,7 +392,9 @@ font-size:32px;
 <nav>
 <a href="{% url 'dashboard' %}">Dashboard</a>
 <a href="{% url 'task_list' %}">Tasks</a>
-<a href="{% url 'task_create' %}">Add Task</a>
+<a href="{% url 'subtask_list' %}">Sub Tasks</a>
+<a href="{% url 'note_list' %}">Notes</a>
+<a href="{% url 'category_list' %}">Categories</a>
 <a href="/admin/">Admin</a>
 </nav>
 
